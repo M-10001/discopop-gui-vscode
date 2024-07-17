@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.2
+
+-   added notification to replace runtime error in case no argument set is defined for the Hotspot Detection, but an execution is requested.
+
 ## 0.1.1
 
 -   added a log webview, which can be opened via command to provide more detailed information

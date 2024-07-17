@@ -148,6 +148,13 @@ export class UIExtension
                     requestConfirmation: getRequestConfirmationWrapper(),
                     cancelToken: getCancelTokenWrapper(token),
                 }
+                if (executableArgumentsForHotspotDetection.length === 0) {
+                    UIPrompts.showMessageForSeconds(
+                        'Hotspot Detection not executed: No executable arguments provided.',
+                        8
+                    )
+                    return
+                }
                 return this.discopopExtension.runHotspotDetection(
                     uiWrappers,
                     projectPath,
