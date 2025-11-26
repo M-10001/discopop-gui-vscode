@@ -10,7 +10,7 @@ This extension requires a working installation of [DiscoPoP](https://github.com/
 
 Open the DiscoPoP view. It is located in the same area as the file explorer and the search view.
 
-To analyze a Project, we need to know where to find it and how to interact with it. This is done in the configurations view. Click on the plus sign to create a configuration and input the required information.
+To analyze a Project, we need to know where to find it and how to interact with it. This is done in the configurations view. When analyzing projects with DiscoPoP, configurations should be created automatically using the timestamp of the first analysis as the default label. To add a configuration manually, click on the plus sign to create a configuration and input the required information.
 
 Now you can run or load DiscoPoP and HotspotDetection from the configurations view.
 
