@@ -15,6 +15,8 @@ import { SimpleTree } from './SimpleTree'
 import { ConfigurationCMake } from './cmake/ConfigurationCMake'
 import { ConfigurationViewOnly } from './viewOnly/ConfigurationViewOnly'
 import { CustomScripts, Script } from './viewOnly/CustomScripts'
+import { env } from 'process'
+import { getEnvironmentData } from 'worker_threads'
 
 function logAndShowErrorMessageHandler(error: any, optionalMessage?: string) {
     if (optionalMessage) {
@@ -69,7 +71,7 @@ export class ConfigurationTreeDataProvider
     ) {
         super([])
 
-        this._loadConfigurationsFromStableStorage()
+        this._loadConfigurations()
 
         // ### LOADING RESULTS AND RUNNING DISCOPOP / HOTSPOT_DETECTION ###
 
@@ -488,7 +490,7 @@ export class ConfigurationTreeDataProvider
         )
     }
 
-    private _loadConfigurationsFromStableStorage(): void {
+    private _loadConfigurationsFromStableStorage(): Configuration[] {
         const projectsString = this._context.globalState.get<string>(
             ConfigurationTreeDataProvider.stableStorageKey,
             '[]'
@@ -499,6 +501,66 @@ export class ConfigurationTreeDataProvider
         )
         this.roots = projects
         this.refresh()
+        return projects
+    }
+
+    private _loadConfigurationsFromUserFolder(
+        configurations: Configuration[]
+    ): void {
+        const user_home_path = process.env.HOME
+        const user_home_dp_locations =
+            user_home_path + '/.discopop/locations.txt'
+        // check if file exists and collect candidates
+        fs.stat(user_home_dp_locations, (exists) => {
+            if (exists === null) {
+                // load automatically created configurations
+                // read location file contents
+                const content: string = fs.readFileSync(
+                    user_home_dp_locations,
+                    'utf-8'
+                )
+                const lines: string[] = content.split(/\r?\n/)
+                lines.forEach((line) => {
+                    if (line.length > 0) {
+                        // unpack line
+                        const split_line = line.split(' ')
+                        const config_label = split_line[0]
+                        const config_dir = split_line[1]
+                        // check if candidates should be considered (that is, if the config_dir is not already in use by a stored configuration)
+                        let candidate_valid = true
+                        configurations.forEach((config) => {
+                            if (config.dotDiscoPoP === config_dir) {
+                                candidate_valid = false
+                            }
+                        })
+
+                        // if candidate valid, add to the list of configurations
+                        if (candidate_valid) {
+                            const new_configuration = new ConfigurationViewOnly(
+                                config_label,
+                                this,
+                                config_dir,
+                                []
+                            )
+                            this.roots = this.roots.concat([new_configuration])
+                        }
+                    }
+                })
+                this.refresh()
+                fs.rm(user_home_dp_locations, (err) => {
+                    console.log(user_home_dp_locations + ' was deleted.')
+                })
+            } else if (exists.code === 'ENOENT') {
+                // nothing to load
+                return
+            }
+        })
+    }
+
+    private _loadConfigurations(): void {
+        const configurations = this._loadConfigurationsFromStableStorage()
+        //this._loadConfigurationsFromDummyPath(configurations);
+        this._loadConfigurationsFromUserFolder(configurations)
     }
 
     public addConfiguration(configuration: Configuration): void {
