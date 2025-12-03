@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.3
+
+-   added support for automatic loading of view-only configurations
+
 ## 0.1.2
 
 -   added notification to replace runtime error in case no argument set is defined for the Hotspot Detection, but an execution is requested.
