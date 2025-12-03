@@ -50,7 +50,3 @@ Sometimes it is helpful to see dependencies between source files. You can use [d
 When git hooks are installed and working, then the file will be updated during a commit (but not added to version control, thats up to you)
 
 ![Dependency-Graph](dependency-graph.svg)
-
-# DUMMY
-
-This is just some dummy content. To be removed.
