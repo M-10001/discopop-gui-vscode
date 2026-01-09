@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.4
+
+-   automatic loading of view-only configurations from "HOME/.discopop_config" instead of "HOME/.discopop"
+
 ## 0.1.3
 
 -   added support for automatic loading of view-only configurations
