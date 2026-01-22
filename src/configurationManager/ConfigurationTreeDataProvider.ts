@@ -538,7 +538,7 @@ export class ConfigurationTreeDataProvider
     ): void {
         const user_home_path = process.env.HOME
         const user_home_dp_locations =
-            user_home_path + '/.discopop/locations.txt'
+            user_home_path + '/.discopop_config/locations.txt'
         // check if file exists and collect candidates
         fs.stat(user_home_dp_locations, (exists) => {
             if (exists === null) {
