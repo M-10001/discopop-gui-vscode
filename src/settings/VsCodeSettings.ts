@@ -62,6 +62,13 @@ export class VsCodeSettings implements Settings {
         VsCodeSettings._setter('previewMode', value)
     }
 
+    get pythonVenvPath(): string {
+        return VsCodeSettings._getter('pythonVenvPath', '')
+    }
+    set pythonVenvPath(value: string) {
+        VsCodeSettings._setter('pythonVenvPath', value)
+    }
+
     private static _getter(key: string, defaultValue: any): any {
         return vscode.workspace
             .getConfiguration('discopop')

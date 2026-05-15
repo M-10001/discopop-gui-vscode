@@ -1,3 +1,4 @@
+import { VenvResolver } from '../VenvResolver'
 import { CancelToken } from '../../utils/cancellation/CancelToken'
 import { CommandExecution } from '../../utils/CommandExecution'
 
@@ -65,7 +66,7 @@ export class DiscoPoPOptimizer {
     public constructor() {}
 
     private _buildCommand(options: OptimizerOptions): string {
-        let command = `discopop_optimizer`
+        let command = VenvResolver.resolve('discopop_optimizer')
 
         if (options.verbose) {
             command += ' --verbose'
@@ -131,9 +132,8 @@ export class DiscoPoPOptimizer {
         stdoutCallback?: (data: string) => void,
         stderrCallback?: (data: string) => void
     ): Promise<void> {
-        await CommandExecution.commandExists(
+        await VenvResolver.checkExists(
             'discopop_optimizer',
-            true,
             'Is DiscoPoP installed?'
         )
 
@@ -141,7 +141,7 @@ export class DiscoPoPOptimizer {
         let command: string
         if (typeof options === 'string') {
             console.log('Using override options for optimizer') // TODO: remove (or add it to the other overrides as well)
-            command = `discopop_optimizer ${options}`
+            command = `${VenvResolver.resolve('discopop_optimizer')} ${options}`
         } else {
             // merge provided options with default options
             options = { ...DefaultOptimizerOptions, ...options }

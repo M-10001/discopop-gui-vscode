@@ -103,6 +103,11 @@
                         "Peek .patch files in the opened source code"
                     ],
                     "default": "Peek"
+                },
+                "discopop.pythonVenvPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to the Python virtual environment (venv) where DiscoPoP is installed."
                 }
             }
         },

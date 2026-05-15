@@ -1,5 +1,6 @@
 // TODO make sure we handle all error codes correctly!!!
 
+import { VenvResolver } from '../VenvResolver'
 import { CommandExecution } from '../../utils/CommandExecution'
 
 export class DiscoPoPPatchApplicator {
@@ -9,14 +10,15 @@ export class DiscoPoPPatchApplicator {
         dotDiscopop: string,
         args: string
     ): Promise<number> {
-        await CommandExecution.commandExists(
+        await VenvResolver.checkExists(
             'discopop_patch_applicator',
-            true,
             'Is DiscoPoP installed?'
         )
         try {
             const executionResult = CommandExecution.execute({
-                command: `discopop_patch_applicator ${args}`,
+                command: `${VenvResolver.resolve(
+                    'discopop_patch_applicator'
+                )} ${args}`,
                 cwd: dotDiscopop,
                 throwOnNonZeroExitCode: true,
             })

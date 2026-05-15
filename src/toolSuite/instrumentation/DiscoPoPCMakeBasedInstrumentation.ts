@@ -1,4 +1,4 @@
-import { CommandExecution } from '../../utils/CommandExecution'
+import { VenvResolver } from '../VenvResolver'
 import {
     CMakeBasedInstrumentation,
     WrapperInfo,
@@ -18,12 +18,9 @@ class DiscoPoPProfilingWrapperInfo implements WrapperInfo {
     public constructor() {}
 
     public get cmakeWrapper(): Promise<string> {
-        return CommandExecution.commandExists(
+        return VenvResolver.checkExists(
             'discopop_cmake',
-            true,
             'Is DiscoPoP installed?'
-        ).then((exists) => {
-            return 'discopop_cmake'
-        })
+        ).then(() => VenvResolver.resolve('discopop_cmake'))
     }
 }

@@ -1,65 +1,62 @@
+import { VenvResolver } from '../VenvResolver'
 import { CommandExecution } from '../../utils/CommandExecution'
 
 export class DiscoPoPConfigProvider {
     public constructor() {}
 
     public get version(): Promise<string> {
-        return CommandExecution.commandExists(
+        return VenvResolver.checkExists(
             'discopop_config_provider',
-            true,
             'Is DiscoPoP installed?'
-        ).then((exists) => {
+        ).then(() => {
             return CommandExecution.execute({
-                command: 'discopop_config_provider --version',
+                command: `${VenvResolver.resolve(
+                    'discopop_config_provider'
+                )} --version`,
                 throwOnNonZeroExitCode: true,
-            }).then((result) => {
-                return result.stdout
-            })
+            }).then((result) => result.stdout)
         })
     }
 
     public get buildDirectory(): Promise<string> {
-        return CommandExecution.commandExists(
+        return VenvResolver.checkExists(
             'discopop_config_provider',
-            true,
             'Is DiscoPoP installed?'
-        ).then((exists) => {
+        ).then(() => {
             return CommandExecution.execute({
-                command: 'discopop_config_provider --dp-build-dir',
+                command: `${VenvResolver.resolve(
+                    'discopop_config_provider'
+                )} --dp-build-dir`,
                 throwOnNonZeroExitCode: true,
-            }).then((result) => {
-                return result.stdout
-            })
+            }).then((result) => result.stdout)
         })
     }
 
     public get sourceDirectory(): Promise<string> {
-        return CommandExecution.commandExists(
+        return VenvResolver.checkExists(
             'discopop_config_provider',
-            true,
             'Is DiscoPoP installed?'
-        ).then((exists) => {
+        ).then(() => {
             return CommandExecution.execute({
-                command: 'discopop_config_provider --dp-source-dir',
+                command: `${VenvResolver.resolve(
+                    'discopop_config_provider'
+                )} --dp-source-dir`,
                 throwOnNonZeroExitCode: true,
-            }).then((result) => {
-                return result.stdout
-            })
+            }).then((result) => result.stdout)
         })
     }
 
     public get llvmBinDirectory(): Promise<string> {
-        return CommandExecution.commandExists(
+        return VenvResolver.checkExists(
             'discopop_config_provider',
-            true,
             'Is DiscoPoP installed?'
-        ).then((exists) => {
+        ).then(() => {
             return CommandExecution.execute({
-                command: 'discopop_config_provider --llvm-bin-dir',
+                command: `${VenvResolver.resolve(
+                    'discopop_config_provider'
+                )} --llvm-bin-dir`,
                 throwOnNonZeroExitCode: true,
-            }).then((result) => {
-                return result.stdout
-            })
+            }).then((result) => result.stdout)
         })
     }
 }

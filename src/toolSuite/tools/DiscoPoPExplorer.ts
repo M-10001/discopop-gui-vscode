@@ -1,3 +1,4 @@
+import { VenvResolver } from '../VenvResolver'
 import { CancelToken } from '../../utils/cancellation/CancelToken'
 import { CommandExecution } from '../../utils/CommandExecution'
 
@@ -11,14 +12,12 @@ export class DiscoPoPExplorer {
         stdoutCallback?: (data: string) => void,
         stderrCallback?: (data: string) => void
     ): Promise<void> {
-        let command = 'discopop_explorer'
-
-        // throw if discopop_explorer command does not exist
-        await CommandExecution.commandExists(
-            command,
-            true, // throw
+        await VenvResolver.checkExists(
+            'discopop_explorer',
             'Is DiscoPoP installed?'
         )
+
+        let command = VenvResolver.resolve('discopop_explorer')
 
         // ovveride options?
         if (overrideExplorerArguments) {
