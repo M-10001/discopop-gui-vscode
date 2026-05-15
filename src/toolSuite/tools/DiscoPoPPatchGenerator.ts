@@ -1,4 +1,5 @@
 import { stdout } from 'process'
+import { VenvResolver } from '../VenvResolver'
 import { CancelToken } from '../../utils/cancellation/CancelToken'
 import { CommandExecution } from '../../utils/CommandExecution'
 
@@ -11,13 +12,12 @@ export class DiscoPoPPatchGenerator {
         stdoutCallback?: (data: string) => void,
         stderrCallback?: (data: string) => void
     ): Promise<void> {
-        await CommandExecution.commandExists(
+        await VenvResolver.checkExists(
             'discopop_patch_generator',
-            true,
             'Is DiscoPoP installed?'
         )
         const execResult = await CommandExecution.execute({
-            command: `discopop_patch_generator`,
+            command: VenvResolver.resolve('discopop_patch_generator'),
             cwd: dotDiscopop,
             cancelToken: cancelToken,
             throwOnNonZeroExitCode: true,
@@ -36,13 +36,14 @@ export class DiscoPoPPatchGenerator {
         stdoutCallback?: (data: string) => void,
         stderrCallback?: (data: string) => void
     ): Promise<void> {
-        await CommandExecution.commandExists(
+        await VenvResolver.checkExists(
             'discopop_patch_generator',
-            true,
             'Is DiscoPoP installed?'
         )
         const execResult = await CommandExecution.execute({
-            command: `discopop_patch_generator -a ${dotDiscopop}/optimizer/patterns.json`,
+            command: `${VenvResolver.resolve(
+                'discopop_patch_generator'
+            )} -a ${dotDiscopop}/optimizer/patterns.json`,
             cwd: dotDiscopop,
             cancelToken: cancelToken,
             throwOnNonZeroExitCode: true,

@@ -1,3 +1,4 @@
+import { VenvResolver } from '../VenvResolver'
 import { CancelToken } from '../../utils/cancellation/CancelToken'
 import { CommandExecution } from '../../utils/CommandExecution'
 
@@ -11,15 +12,13 @@ export class HotspotDetection {
         stdoutCallback?: (data: string) => void,
         stderrCallback?: (data: string) => void
     ): Promise<void> {
-        // Check if hotspot_analyzer is installed
-        await CommandExecution.commandExists(
+        await VenvResolver.checkExists(
             'hotspot_analyzer',
-            true,
             'Is Hotspot Detection installed?'
         )
 
         // build the command
-        let command: string = `hotspot_analyzer`
+        let command: string = VenvResolver.resolve('hotspot_analyzer')
         if (overrideHotspotDetectionArguments) {
             command += ` ${overrideHotspotDetectionArguments}`
         }

@@ -7,4 +7,5 @@ export interface Settings {
         enabled: boolean
     }
     previewMode: 'Peek' | 'Editor'
+    pythonVenvPath: string
 }

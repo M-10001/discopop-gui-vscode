@@ -1,4 +1,4 @@
-import { CommandExecution } from '../../utils/CommandExecution'
+import { VenvResolver } from '../VenvResolver'
 import {
     CMakeBasedInstrumentation,
     WrapperInfo,
@@ -18,12 +18,9 @@ class HotspotDetectionProfilingWrapperInfo implements WrapperInfo {
     public constructor() {}
 
     public get cmakeWrapper(): Promise<string> {
-        return CommandExecution.commandExists(
+        return VenvResolver.checkExists(
             'discopop_hotspot_cmake',
-            true,
             'Is the Hotspot Detection tool installed?'
-        ).then((exists) => {
-            return 'discopop_hotspot_cmake'
-        })
+        ).then(() => VenvResolver.resolve('discopop_hotspot_cmake'))
     }
 }
