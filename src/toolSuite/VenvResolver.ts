@@ -1,4 +1,5 @@
 import * as path from 'path'
+import * as vscode from 'vscode'
 import { VsCodeSettings } from '../settings/VsCodeSettings'
 import { CommandExecution } from '../utils/CommandExecution'
 
@@ -30,9 +31,11 @@ export class VenvResolver {
                 command: `test -f "${fullPath}"`,
                 throwOnNonZeroExitCode: true,
             }).catch(() => {
-                throw new Error(
-                    `${binaryName} not found in venv at ${venvPath}. ${installationHint}`
-                )
+                const message =
+                    `${binaryName} not found in the configured venv (${venvPath}). ` +
+                    `Please check that the "DiscoPoP: Python Venv Path" setting points to the correct virtual environment.`
+                vscode.window.showErrorMessage(message)
+                throw new Error(message)
             })
         } else {
             await CommandExecution.commandExists(
